@@ -31,6 +31,22 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 
 ## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Opción 1: Desde el dashboard (recomendado)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Entra en **[vercel.com](https://vercel.com)** e inicia sesión con GitHub.
+2. Click en **“Add New…” → “Project”**.
+3. Importa el repo **`DJGOX/Webelchalan`** (conecta GitHub si hace falta).
+4. Vercel detecta Next.js automáticamente. Click en **“Deploy”**.
+5. En unos minutos tendrás la URL (ej. `webelchalan.vercel.app`).
+
+Cada `git push` a `main` generará un nuevo deploy automático.
+
+### Opción 2: Con Vercel CLI
+
+```bash
+npm i -g vercel
+vercel login
+vercel
+```
+
+Sigue los pasos (linkear al proyecto o crear uno nuevo). Para producción: `vercel --prod`.

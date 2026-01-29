@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -22,6 +23,9 @@ const nav = [
 export default function Header() {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => setMounted(true), []);
 
   // Close menu when route changes
   useEffect(() => {
@@ -41,6 +45,7 @@ export default function Header() {
   }, [isMobileMenuOpen]);
 
   return (
+    <>
     <header className="sticky top-0 z-50 border-b border-white/5 bg-[#1A1A1A]/95 font-sans text-white backdrop-blur-md transition-all shadow-md">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
         <Link href="/" className="z-50 flex items-center gap-2">
@@ -110,69 +115,90 @@ export default function Header() {
         </button>
       </div>
 
-      {/* Mobile Full Screen Menu Overlay */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, clipPath: "circle(0% at 100% 0)" }}
-            animate={{ opacity: 1, clipPath: "circle(150% at 100% 0)" }}
-            exit={{ opacity: 0, clipPath: "circle(0% at 100% 0)" }}
-            transition={{ duration: 0.4, ease: "easeInOut" }}
-            className="fixed inset-0 z-40 flex flex-col bg-[#1A1A1A] px-4 pt-20 pb-8 md:hidden"
-          >
-            <div className="absolute left-4 top-6">
-              <Link href="/" onClick={() => setIsMobileMenuOpen(false)}>
-                <Image
-                  src="/images/logo.png"
-                  alt={site.name}
-                  width={140}
-                  height={42}
-                  className="h-9 w-auto object-contain"
-                />
-              </Link>
-            </div>
-            <nav className="flex flex-1 flex-col items-center justify-center gap-6 text-center">
-              {nav.map((i) => {
-                const isActive = pathname === i.href;
-                return (
-                  <Link
-                    key={i.href}
-                    href={i.href}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className={cn(
-                      "text-3xl font-black uppercase tracking-tight transition-colors",
-                      isActive ? "text-[#C4120D]" : "text-white hover:text-[#C4120D]"
-                    )}
-                  >
-                    {i.label}
-                  </Link>
-                );
-              })}
-            </nav>
-
-            <div className="mt-auto flex flex-col gap-4 px-8">
-              <p className="text-center text-sm font-semibold uppercase tracking-wider text-white/70">
-                Síguenos
-              </p>
-              <SocialIcons variant="social" className="justify-center" />
-              <a
-                href={site.orderOnlineUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="flex w-full items-center justify-center rounded-lg bg-[#C4120D] py-4 text-base font-bold uppercase tracking-wider text-white shadow-lg transition-transform active:scale-95 hover:bg-white hover:!text-[#C4120D] hover:border hover:border-[#C4120D]"
-              >
-                Order Online
-              </a>
-              <a
-                href={`tel:${site.phones[0]}`}
-                className="flex w-full items-center justify-center rounded-lg border border-white/20 bg-white/5 py-4 text-base font-bold uppercase tracking-wider text-white backdrop-blur-sm transition-transform active:scale-95 active:bg-white/10"
-              >
-                Call {site.phones[0]}
-              </a>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </header>
+    {/* Menú móvil: Portal a body para que quede siempre encima (z-index alto, fondo opaco) */}
+    {mounted && typeof document !== "undefined" && document.body &&
+      createPortal(
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
+              className="fixed inset-0 z-[9999] flex flex-col bg-[#0d0d0d] px-4 pt-20 pb-8 md:hidden"
+              style={{ isolation: "isolate" }}
+            >
+              <div className="absolute left-4 top-6">
+                <Link href="/" onClick={() => setIsMobileMenuOpen(false)}>
+                  <Image
+                    src="/images/logo.png"
+                    alt={site.name}
+                    width={140}
+                    height={42}
+                    className="h-9 w-auto object-contain"
+                  />
+                </Link>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="absolute right-4 top-6 flex h-10 w-10 items-center justify-center rounded-lg border border-white/20 text-white transition hover:bg-white/10"
+                aria-label="Cerrar menú"
+              >
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M18 6 6 18M6 6l12 12" />
+                </svg>
+              </button>
+              <nav className="flex flex-1 flex-col items-center justify-center gap-6 text-center pb-2">
+                {nav.map((i) => {
+                  const isActive = pathname === i.href;
+                  const isHome = i.href === "/";
+                  return (
+                    <Link
+                      key={i.href}
+                      href={i.href}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className={cn(
+                        "text-3xl font-black uppercase tracking-tight transition-colors",
+                        (!isHome || isActive) && "!text-[#C4120D]",
+                        isHome && !isActive && "text-white hover:!text-[#C4120D]"
+                      )}
+                    >
+                      {i.label}
+                    </Link>
+                  );
+                })}
+              </nav>
+
+              <div className="mt-auto flex flex-col gap-4 px-8 pb-8 pt-10">
+                <p className="text-center text-sm font-semibold uppercase tracking-wider text-white">
+                  Síguenos
+                </p>
+                <SocialIcons
+                  variant="social"
+                  className="justify-center [&>a]:!bg-white/15 [&>a]:!text-white [&>a:hover]:!bg-white/25"
+                />
+                <a
+                  href={site.orderOnlineUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex w-full items-center justify-center rounded-lg bg-[#C4120D] py-4 text-base font-bold uppercase tracking-wider text-white shadow-lg transition-transform active:scale-95 hover:bg-white hover:!text-[#C4120D] hover:border hover:border-[#C4120D]"
+                >
+                  Order Online
+                </a>
+                <a
+                  href={`tel:${site.phones[0]}`}
+                  className="flex w-full items-center justify-center rounded-lg border border-white/40 bg-white/10 py-4 text-base font-bold uppercase tracking-wider !text-white backdrop-blur-sm transition-transform active:scale-95 active:bg-white/15 hover:bg-white/15"
+                >
+                  Call {site.phones[0]}
+                </a>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
+    </>
   );
 }
