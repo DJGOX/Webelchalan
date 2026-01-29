@@ -6,6 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { site } from "@/data/site";
 import { cn } from "@/lib/utils";
+import SocialIcons from "@/components/ui/SocialIcons";
 import { AnimatePresence, motion } from "framer-motion";
 
 const nav = [
@@ -72,8 +73,12 @@ export default function Header() {
           })}
         </nav>
 
-        {/* Desktop Actions */}
-        <div className="hidden items-center gap-6 pl-6 md:flex">
+        {/* Desktop Actions: redes + Order Now */}
+        <div className="hidden items-center gap-4 pl-6 md:flex">
+          <SocialIcons
+            variant="social"
+            className="flex-wrap gap-1.5 [&>a]:p-2 [&>a]:rounded-md"
+          />
           <a
             href={`tel:${site.phones[0]}`}
             className="rounded-md bg-[#C4120D] px-6 py-2.5 text-sm font-bold uppercase tracking-wider text-white transition-all hover:bg-white hover:!text-[#C4120D] hover:border-2 hover:border-[#C4120D] shadow-lg"
@@ -146,6 +151,10 @@ export default function Header() {
             </nav>
 
             <div className="mt-auto flex flex-col gap-4 px-8">
+              <p className="text-center text-sm font-semibold uppercase tracking-wider text-white/70">
+                Síguenos
+              </p>
+              <SocialIcons variant="social" className="justify-center" />
               <a
                 href={site.orderOnlineUrl}
                 target="_blank"

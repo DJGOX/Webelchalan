@@ -8,6 +8,9 @@ export const site = {
   facebookUrl: "https://www.facebook.com/polloselchalan",
   instagramUrl:
     "https://www.instagram.com/polloselchalan?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
+  tiktokUrl: "https://www.tiktok.com/@polloselchalan",
+  linktreeUrl: "https://linktr.ee/polloselchalan",
+  websiteUrl: "https://pollosalabrasaelchalan.com",
   hours: [
     { day: "Monday", open: "9:00 AM", close: "9:30 PM" },
     { day: "Tuesday", open: "9:00 AM", close: "9:30 PM" },

@@ -6,18 +6,20 @@ import { motion } from "framer-motion";
 
 export default function Hero() {
     return (
-        <section className="relative h-screen w-full overflow-hidden bg-black">
-            {/* Background Image with Zoom Effect */}
+        <section className="relative h-screen w-full overflow-hidden bg-[#1a0f0a]">
+            {/* Background: pollos a la brasa al carbón */}
             <Image
-                src="/images/hero.jpg"
-                alt="Pollos A La Brasa El Chalan"
+                src="/images/hero-pollo-brasa.png"
+                alt=""
                 fill
                 priority
-                className="object-cover opacity-80 transition-transform duration-[20s] hover:scale-110"
+                quality={95}
+                className="object-cover object-center contrast-[1.05] saturate-[1.08]"
+                sizes="100vw"
             />
 
-            {/* Dark Overlay Gradient - Stronger for rustic feel */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-black/60" />
+            {/* Overlay para legibilidad del texto */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/50 to-black/35" />
 
             {/* Content */}
             <div className="relative z-10 flex h-full items-center justify-center pt-20">
@@ -52,7 +54,7 @@ export default function Hero() {
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.8, delay: 0.2 }}
-                        className="mb-2 text-5xl font-black uppercase tracking-tighter sm:text-7xl md:text-8xl drop-shadow-2xl"
+                        className="hero-fire-text mb-2 text-5xl font-black uppercase tracking-tighter sm:text-7xl md:text-8xl"
                     >
                         Authentic Peruvian
                     </motion.h1>
@@ -61,7 +63,7 @@ export default function Hero() {
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.8, delay: 0.4 }}
-                        className="mb-10 text-5xl font-black uppercase tracking-tighter sm:text-7xl md:text-8xl text-transparent bg-clip-text bg-gradient-to-r from-primary to-[#FF5722]"
+                        className="hero-fire-text mb-10 text-5xl font-black uppercase tracking-tighter sm:text-7xl md:text-8xl"
                     >
                         Rotisserie
                     </motion.h2>
@@ -85,7 +87,7 @@ export default function Hero() {
                     >
                         <a
                             href="tel:6175679452"
-                            className="group relative flex items-center justify-center overflow-hidden rounded-md bg-primary px-10 py-5 text-lg font-bold uppercase tracking-widest text-white shadow-2xl transition-all hover:scale-105 hover:bg-white hover:!text-primary hover:shadow-primary/50"
+                            className="relative flex items-center justify-center overflow-hidden rounded-md bg-primary px-10 py-5 text-lg font-bold uppercase tracking-widest text-white shadow-2xl transition-all hover:scale-105 hover:brightness-110 hover:shadow-primary/50"
                         >
                             <span className="relative z-10 flex items-center gap-3">
                                 Call to Order
